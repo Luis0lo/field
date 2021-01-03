@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Fields</title>
+  </head>
+  <body>
+    <h1>Edit Field</h1>
+    <form action="/fields/<%= field._id %>?_method=PUT " method="POST">
+      <div>
+        <label for="title">Title</label>
+        <input
+          type="text"
+          name="field[title]"
+          id="title"
+          value="<%= field.title %> "
+        />
+      </div>
+      <div>
+        <label for="location">Location</label>
+        <input
+          type="text"
+          name="field[location]"
+          id="location"
+          value="<%=
+        field.location %>"
+        />
+      </div>
+      <button>Update Field</button>
+    </form>
+    <footer>
+      <a href="/fields/<%= field._id %> ">Back to Field</a>
+    </footer>
+  </body>
+</html>
