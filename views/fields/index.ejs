@@ -10,7 +10,7 @@
 
     <ul>
       <% for (let field of fields) { %>
-      <li><%= field.title %></li>
+      <li><a href="fields/<%= field._id %>"><%= field.title %></a></li>
       <% } %>
     </ul>
   </body>

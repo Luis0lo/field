@@ -30,6 +30,11 @@ app.get('/fields', async (req, res) => {
   res.render('fields/index', { fields });
 });
 
+app.get('/fields/:id', async (req, res) => {
+  const field = await Field.findById(req.params.id);
+  res.render('fields/show', { field });
+});
+
 app.listen(3000, () => {
   console.log('Running in 3k');
 });
