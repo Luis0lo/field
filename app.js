@@ -61,6 +61,12 @@ app.put('/fields/:id', async (req, res) => {
   res.redirect(`/fields/${field._id}`);
 });
 
+app.delete('/fields/:id', async (req, res) => {
+  const { id } = req.params;
+  await Field.findByIdAndDelete(id);
+  res.redirect('/fields');
+});
+
 app.listen(3000, () => {
   console.log('Running in 3k');
 });

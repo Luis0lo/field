@@ -8,10 +8,15 @@
   <body>
     <h1><%= field.title %></h1>
     <h2><%= field.location %></h2>
+    <p>
+      <a href="/fields/<%= field._id %>/edit ">Edit</a>
+    </p>
+    <p>
+      <form action="/fields/<%= field._id %>?_method=DELETE" method="POST" >
+        <button>Delete Field</button>
+      </form>
+    </p>
     <footer>
-      <p>
-        <a href="/fields/<%= field._id %>/edit ">Edit</a>
-      </p>
       <a href="/fields">All Fields</a>
     </footer>
   </body>
