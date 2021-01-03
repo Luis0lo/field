@@ -21,6 +21,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
   res.render('home');
 });
@@ -28,6 +30,16 @@ app.get('/', (req, res) => {
 app.get('/fields', async (req, res) => {
   const fields = await Field.find({});
   res.render('fields/index', { fields });
+});
+
+app.get('/fields/new', (req, res) => {
+  res.render('fields/new');
+});
+
+app.post('/fields', async (req, res) => {
+  const field = new Field(req.body.field);
+  await field.save();
+  res.redirect(`/fields/${field._id}`);
 });
 
 app.get('/fields/:id', async (req, res) => {
