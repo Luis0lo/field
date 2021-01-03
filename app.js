@@ -25,13 +25,9 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('/reportfield', async (req, res) => {
-  const camp = new Field({
-    title: 'Coelho',
-    description: 'Aguacate e Anonas',
-  });
-  await camp.save();
-  res.send(camp);
+app.get('/fields', async (req, res) => {
+  const fields = await Field.find({});
+  res.render('fields/index', { fields });
 });
 
 app.listen(3000, () => {
