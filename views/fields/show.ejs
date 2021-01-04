@@ -1,23 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Show</title>
-  </head>
-  <body>
-    <h1><%= field.title %></h1>
-    <h2><%= field.location %></h2>
-    <p>
-      <a href="/fields/<%= field._id %>/edit ">Edit</a>
-    </p>
-    <p>
-      <form action="/fields/<%= field._id %>?_method=DELETE" method="POST" >
-        <button>Delete Field</button>
-      </form>
-    </p>
-    <footer>
-      <a href="/fields">All Fields</a>
-    </footer>
-  </body>
-</html>
+<% layout('layouts/Boilerplate') %>
+
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card mb-3">
+      <img src="<%= field.image %> " class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title"><%= field.title %></h5>
+        <p class="card-text"><%= field.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%= field.location %></li>
+        <li class="list-group-item"><%= field.price %></li>
+      </ul>
+      <div class="card-body">
+        <a class="card-link btn btn-info" href="/fields/<%= field._id %>/edit "
+          >Edit</a
+        >
+        <form
+          class="d-inline"
+          action="/fields/<%= field._id %>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-danger">Delete Field</button>
+        </form>
+      </div>
+      <div class="card-footer text-muted">2 days ago</div>
+    </div>
+  </div>
+</div>
+<a href="/fields">All Fields</a>

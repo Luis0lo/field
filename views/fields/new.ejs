@@ -1,25 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Fields</title>
-  </head>
-  <body>
-    <h1>New Field</h1>
+<% layout('layouts/Boilerplate') %>
+
+<div class="row">
+  <h1 class="text-center">New Field</h1>
+  <div class="col-6 offset-3">
     <form action="/fields" method="POST">
-      <div>
-        <label for="title">Title</label>
-        <input type="text" name="field[title]" id="title" />
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          name="field[title]"
+          id="title"
+        />
       </div>
-      <div>
-        <label for="location">Location</label>
-        <input type="text" name="field[location]" id="location" />
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          name="field[location]"
+          id="location"
+        />
       </div>
-      <button>Add Field</button>
+      <div class="mb-3">
+        <label class="form-label" for="image">Image</label>
+        <input
+          class="form-control"
+          type="text"
+          name="field[image]"
+          id="image"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="price">Price</label>
+
+        <div class="input-group">
+          <span class="input-group-text" id="price-label">$</span>
+          <input
+            type="text"
+            class="form-control"
+            name="field[price]"
+            id="price"
+            placeholder="0.00"
+            aria-label="price"
+            aria-describedby="price-label"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          name="field[description]"
+          id="description"
+          rows="3"
+        ></textarea>
+      </div>
+      <div class="d-grid mb-3">
+        <button class="btn btn-success">Add Field</button>
+      </div>
     </form>
-    <footer>
-      <a href="/fields">All Fields</a>
-    </footer>
-  </body>
-</html>
+
+    <a href="/fields">All Fields</a>
+  </div>
+</div>

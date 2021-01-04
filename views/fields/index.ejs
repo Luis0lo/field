@@ -1,20 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fields</title>
-  </head>
-  <body>
-    <h1>All Fields</h1>
-    <div>
-      <a href="/fields/new">Add Fields</a>
-    </div>
+<% layout('layouts/Boilerplate') %>
+<h1>All Fields</h1>
+<div>
+  <a href="/fields/new">Add Fields</a>
+</div>
 
-    <ul>
-      <% for (let field of fields) { %>
-      <li><a href="fields/<%= field._id %>"><%= field.title %></a></li>
-      <% } %>
-    </ul>
-  </body>
-</html>
+<% for (let field of fields) { %>
+
+<div class="card mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <img class="img-fluid" src="<%= field.image %> " alt="" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= field.title %></h5>
+        <p class="card-text"><%= field.description %></p>
+        <p class="card-text">
+          <small class="text-muted"><%= field.location %></small>
+        </p>
+        <a class="btn btn-primary" href="/fields/<%= field._id %> "
+          >View <%= field.title %></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
