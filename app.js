@@ -129,6 +129,16 @@ app.post(
   })
 );
 
+app.delete(
+  '/fields/:id/reviews/:reviewId',
+  catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Field.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/fields/${id}`);
+  })
+);
+
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page not found', 404));
 });
