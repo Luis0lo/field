@@ -84,7 +84,7 @@ app.post(
 app.get(
   '/fields/:id',
   catchAsync(async (req, res) => {
-    const field = await Field.findById(req.params.id);
+    const field = await Field.findById(req.params.id).populate('reviews');
     res.render('fields/show', { field });
   })
 );
