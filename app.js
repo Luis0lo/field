@@ -7,6 +7,7 @@ const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
 const Field = require('./models/field');
+const Review = require('./models/review');
 const { join } = require('path');
 
 mongoose.connect('mongodb://localhost:27017/field', {
@@ -102,6 +103,18 @@ app.delete(
     const { id } = req.params;
     await Field.findByIdAndDelete(id);
     res.redirect('/fields');
+  })
+);
+
+app.post(
+  '/fields/:id/reviews',
+  catchAsync(async (req, res) => {
+    const field = await Field.findById(req.params.id);
+    const review = new Review(req.body.review);
+    field.reviews.push(review);
+    await review.save();
+    await field.save();
+    res.redirect(`/fields/${field._id}`);
   })
 );
 
