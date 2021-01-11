@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { fieldSchema } = require('./schemas.js');
+const { fieldSchema, reviewSchema } = require('./schemas.js');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
@@ -35,6 +35,16 @@ app.use(methodOverride('_method'));
 
 const validateField = (req, res, next) => {
   const { error } = fieldSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(',');
     throw new ExpressError(msg, 400);
@@ -108,6 +118,7 @@ app.delete(
 
 app.post(
   '/fields/:id/reviews',
+  validateReview,
   catchAsync(async (req, res) => {
     const field = await Field.findById(req.params.id);
     const review = new Review(req.body.review);
