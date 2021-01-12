@@ -43,6 +43,10 @@ router.get(
   '/:id',
   catchAsync(async (req, res) => {
     const field = await Field.findById(req.params.id).populate('reviews');
+    if (!field) {
+      req.flash('error', 'Cannot find that field!');
+      return res.redirect('/fields');
+    }
     res.render('fields/show', { field });
   })
 );
@@ -51,6 +55,10 @@ router.get(
   '/:id/edit',
   catchAsync(async (req, res) => {
     const field = await Field.findById(req.params.id);
+    if (!field) {
+      req.flash('error', 'Cannot find that field!');
+      return res.redirect('/fields');
+    }
     res.render('fields/edit', { field });
   })
 );
