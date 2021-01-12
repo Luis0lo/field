@@ -35,7 +35,6 @@ router.post(
     const field = new Field(req.body.field);
     await field.save();
     req.flash('success', 'Your field has been posted');
-
     res.redirect(`/fields/${field._id}`);
   })
 );
@@ -62,6 +61,7 @@ router.put(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const field = await Field.findByIdAndUpdate(id, { ...req.body.field });
+    req.flash('success', 'Your field has been Updated');
     res.redirect(`/fields/${field._id}`);
   })
 );
@@ -71,6 +71,7 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Field.findByIdAndDelete(id);
+    req.flash('success', 'Successfully deleted field');
     res.redirect('/fields');
   })
 );

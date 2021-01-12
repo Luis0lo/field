@@ -26,6 +26,7 @@ router.post(
     field.reviews.push(review);
     await review.save();
     await field.save();
+    req.flash('success', 'Thanks for your review!');
     res.redirect(`/fields/${field._id}`);
   })
 );
@@ -36,6 +37,7 @@ router.delete(
     const { id, reviewId } = req.params;
     await Field.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
+    req.flash('success', 'Successfully deleted review');
     res.redirect(`/fields/${id}`);
   })
 );
