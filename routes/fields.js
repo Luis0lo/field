@@ -32,9 +32,10 @@ router.post(
   validateField,
   catchAsync(async (req, res, next) => {
     // if (!req.body.field) throw new ExpressError('Invalid Field Data', 400);
-
     const field = new Field(req.body.field);
     await field.save();
+    req.flash('success', 'Your field has been posted');
+
     res.redirect(`/fields/${field._id}`);
   })
 );
