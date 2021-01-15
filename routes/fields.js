@@ -54,6 +54,7 @@ router.get(
 
 router.get(
   '/:id/edit',
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const field = await Field.findById(req.params.id);
     if (!field) {
@@ -66,6 +67,7 @@ router.get(
 
 router.put(
   '/:id',
+  isLoggedIn,
   validateField,
   catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -77,6 +79,7 @@ router.put(
 
 router.delete(
   '/:id',
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Field.findByIdAndDelete(id);
