@@ -11,9 +11,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
-const fields = require('./routes/fields');
-const reviews = require('./routes/reviews');
-const { getMaxListeners } = require('./models/user');
+const userRoutes = require('./routes/users');
+const fieldsRoutes = require('./routes/fields');
+const reviewsRoutes = require('./routes/reviews');
 
 mongoose.connect('mongodb://localhost:27017/field', {
   useNewUrlParser: true,
@@ -68,17 +68,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/fakeuser', async (req, res) => {
-  const user = new User({
-    email: 'luis@gmail.com',
-    username: 'luis',
-  });
-  const newUser = await User.register(user, 'secret');
-  res.send(newUser);
-});
-
-app.use('/fields', fields);
-app.use('/fields/:id/reviews', reviews);
+app.use('/', userRoutes);
+app.use('/fields', fieldsRoutes);
+app.use('/fields/:id/reviews', reviewsRoutes);
 
 app.get('/', (req, res) => {
   res.render('home');
