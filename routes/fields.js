@@ -4,6 +4,7 @@ const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError');
 const Field = require('../models/field');
 const { fieldSchema } = require('../schemas.js');
+const { isLoggedIn } = require('../middleware');
 
 const validateField = (req, res, next) => {
   const { error } = fieldSchema.validate(req.body);
@@ -23,15 +24,15 @@ router.get(
   })
 );
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
   res.render('fields/new');
 });
 
 router.post(
   '/',
+  isLoggedIn,
   validateField,
   catchAsync(async (req, res, next) => {
-    // if (!req.body.field) throw new ExpressError('Invalid Field Data', 400);
     const field = new Field(req.body.field);
     await field.save();
     req.flash('success', 'Your field has been posted');
