@@ -7,9 +7,13 @@ const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
 const { join } = require('path');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 const fields = require('./routes/fields');
 const reviews = require('./routes/reviews');
+const { getMaxListeners } = require('./models/user');
 
 mongoose.connect('mongodb://localhost:27017/field', {
   useNewUrlParser: true,
@@ -46,15 +50,31 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
-app.use(session(sessionConfig));
 
+app.use(session(sessionConfig));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //flash middleware
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
+});
+
+app.get('/fakeuser', async (req, res) => {
+  const user = new User({
+    email: 'luis@gmail.com',
+    username: 'luis',
+  });
+  const newUser = await User.register(user, 'secret');
+  res.send(newUser);
 });
 
 app.use('/fields', fields);
