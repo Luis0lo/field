@@ -5,6 +5,9 @@ const catchAsync = require('../utilities/catchAsync');
 const User = require('../models/user');
 
 router.get('/register', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/fields');
+  }
   res.render('users/register');
 });
 
@@ -28,6 +31,9 @@ router.post(
 );
 
 router.get('/login', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/fields');
+  }
   res.render('users/login');
 });
 
@@ -39,7 +45,9 @@ router.post(
   }),
   (req, res) => {
     req.flash('success', 'Welcome back!');
-    res.redirect('/fields');
+    const redirectUrl = req.session.returnTo || '/fields';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
   }
 );
 
