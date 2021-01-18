@@ -59,10 +59,15 @@ router.get(
   '/:id/edit',
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const field = await Field.findById(req.params.id);
+    const { id } = req.params;
+    const field = await Field.findById(id);
     if (!field) {
       req.flash('error', 'Cannot find that field!');
       return res.redirect('/fields');
+    }
+    if (!field.owner.equals(req.user._id)) {
+      req.flash('error', 'You do not have permission to do that!');
+      return res.redirect(`/fields/${id}`);
     }
     res.render('fields/edit', { field });
   })
@@ -74,7 +79,12 @@ router.put(
   validateField,
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const field = await Field.findByIdAndUpdate(id, { ...req.body.field });
+    const field = await Field.findById(id);
+    if (!field.owner.equals(req.user._id)) {
+      req.flash('error', 'You do not have permission to do that!');
+      return res.redirect(`/fields/${id}`);
+    }
+    const fieldd = await Field.findByIdAndUpdate(id, { ...req.body.field });
     req.flash('success', 'Your field has been Updated');
     res.redirect(`/fields/${field._id}`);
   })
