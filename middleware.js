@@ -33,7 +33,7 @@ module.exports.isOwner = async (req, res, next) => {
 };
 
 module.exports.isReviewOwner = async (req, res, next) => {
-  const { id, ReviewId } = req.params;
+  const { id, reviewId } = req.params;
   const review = await Review.findById(reviewId);
   if (!review.owner.equals(req.user._id)) {
     req.flash('error', 'You do not have permission to do that!');
