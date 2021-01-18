@@ -1,20 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
-const ExpressError = require('../utilities/ExpressError');
 const Field = require('../models/field');
-const { fieldSchema } = require('../schemas.js');
-const { isLoggedIn } = require('../middleware');
-
-const validateField = (req, res, next) => {
-  const { error } = fieldSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(',');
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
+const { isLoggedIn, isOwner, validateField } = require('../middleware');
 
 router.get(
   '/',
@@ -58,16 +46,13 @@ router.get(
 router.get(
   '/:id/edit',
   isLoggedIn,
+  isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const field = await Field.findById(id);
     if (!field) {
       req.flash('error', 'Cannot find that field!');
       return res.redirect('/fields');
-    }
-    if (!field.owner.equals(req.user._id)) {
-      req.flash('error', 'You do not have permission to do that!');
-      return res.redirect(`/fields/${id}`);
     }
     res.render('fields/edit', { field });
   })
@@ -76,15 +61,11 @@ router.get(
 router.put(
   '/:id',
   isLoggedIn,
+  isOwner,
   validateField,
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const field = await Field.findById(id);
-    if (!field.owner.equals(req.user._id)) {
-      req.flash('error', 'You do not have permission to do that!');
-      return res.redirect(`/fields/${id}`);
-    }
-    const fieldd = await Field.findByIdAndUpdate(id, { ...req.body.field });
+    const field = await Field.findByIdAndUpdate(id, { ...req.body.field });
     req.flash('success', 'Your field has been Updated');
     res.redirect(`/fields/${field._id}`);
   })
@@ -93,6 +74,7 @@ router.put(
 router.delete(
   '/:id',
   isLoggedIn,
+  isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Field.findByIdAndDelete(id);
