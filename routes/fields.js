@@ -33,7 +33,7 @@ router.get(
   '/:id',
   catchAsync(async (req, res) => {
     const field = await Field.findById(req.params.id)
-      .populate('reviews')
+      .populate({ path: 'reviews', populate: { path: 'owner' } })
       .populate('owner');
     if (!field) {
       req.flash('error', 'Cannot find that field!');
