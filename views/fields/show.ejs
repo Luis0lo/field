@@ -10,6 +10,9 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted"><%= field.location %></li>
+        <li class="list-group-item">
+          Submitted by <%= field.owner.username %>
+        </li>
         <li class="list-group-item"><%= field.price %></li>
       </ul>
       <div class="card-body">

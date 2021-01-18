@@ -24,6 +24,7 @@ const seedDB = async () => {
     const random1000 = Math.floor(Math.random() * 1000);
     const price = Math.floor(Math.random() * 20) + 10;
     const camp = new Field({
+      owner: '6001b3c9e594dd2f000e745f',
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       title: `${sample(descriptors)} ${sample(places)}`,
       image: 'https://source.unsplash.com/collection/4025682',
@@ -38,3 +39,5 @@ const seedDB = async () => {
 seedDB().then(() => {
   mongoose.connection.close();
 });
+
+//  run node seeds/index.js each time you need update seeds

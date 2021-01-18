@@ -34,6 +34,7 @@ router.post(
   validateField,
   catchAsync(async (req, res, next) => {
     const field = new Field(req.body.field);
+    field.owner = req.user._id;
     await field.save();
     req.flash('success', 'Your field has been posted');
     res.redirect(`/fields/${field._id}`);
@@ -43,7 +44,9 @@ router.post(
 router.get(
   '/:id',
   catchAsync(async (req, res) => {
-    const field = await Field.findById(req.params.id).populate('reviews');
+    const field = await Field.findById(req.params.id)
+      .populate('reviews')
+      .populate('owner');
     if (!field) {
       req.flash('error', 'Cannot find that field!');
       return res.redirect('/fields');
