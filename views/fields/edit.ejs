@@ -2,7 +2,7 @@
 
 <div class="row">
   <h1 class="text-center">Edit Field</h1>
-  <div class="col-6 offset-3">
+  <div class="col-md-6 mx-auto">
     <form
       action="/fields/<%= field._id %>?_method=PUT "
       method="POST"
@@ -34,10 +34,6 @@
         />
         <div class="valid-feedback">Looks Good!</div>
       </div>
-      <!-- <div class="mb-3">
-        <label class="form-label" for="image">Add Images</label>
-        <input type="file" name="image" id="image" multiple />
-      </div> -->
       <div class="mb-3">
         <label class="form-label" for="price">Price</label>
 
@@ -84,7 +80,7 @@
       </div>
       <div class="mb-3">
         <% field.images.forEach(function (img, i) { %>
-        <img src="<%=img.url%> " alt="" class="img-thumbnail" />
+        <img src="<%=img.thumbnail%> " alt="" class="img-thumbnail mb-2" />
         <div class="form-check-inline">
           <input
             type="checkbox"

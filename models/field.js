@@ -3,9 +3,18 @@ const { fieldSchema } = require('../schemas');
 const Review = require('./review');
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema({
+  url: String,
+  filename: String,
+});
+
+ImageSchema.virtual('thumbnail').get(function () {
+  return this.url.replace('/upload', '/upload/w_200');
+});
+
 const FieldSchema = new Schema({
   title: String,
-  images: [{ url: String, filename: String }],
+  images: [ImageSchema],
   price: Number,
   description: String,
   location: String,
