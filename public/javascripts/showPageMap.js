@@ -6,4 +6,11 @@ const map = new mapboxgl.Map({
   zoom: 9, // starting zoom
 });
 
-new mapboxgl.Marker().setLngLat(field.geometry.coordinates).addTo(map);
+new mapboxgl.Marker()
+  .setLngLat(field.geometry.coordinates)
+  .setPopup(
+    new mapboxgl.Popup({ offset: 25 }).setHTML(
+      `<h3>${field.title}</h3><p>${field.location}</p>`
+    )
+  )
+  .addTo(map);
