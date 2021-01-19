@@ -20,13 +20,13 @@ module.exports.createField = async (req, res, next) => {
       limit: 1,
     })
     .send();
-  res.send(geoData.body.features[0].geometry.coordinates);
-  // const field = new Field(req.body.field);
-  // field.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-  // field.owner = req.user._id;
-  // await field.save();
-  // req.flash('success', 'Your field has been posted');
-  // res.redirect(`/fields/${field._id}`);
+  const field = new Field(req.body.field);
+  field.geometry = geoData.body.features[0].geometry;
+  field.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+  field.owner = req.user._id;
+  await field.save();
+  req.flash('success', 'Your field has been posted');
+  res.redirect(`/fields/${field._id}`);
 };
 
 module.exports.showField = async (req, res) => {
