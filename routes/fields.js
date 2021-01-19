@@ -22,7 +22,13 @@ router.get('/new', isLoggedIn, fields.renderNewForm);
 router
   .route('/:id')
   .get(catchAsync(fields.showField))
-  .put(isLoggedIn, isOwner, validateField, catchAsync(fields.updateFields))
+  .put(
+    isLoggedIn,
+    isOwner,
+    upload.array('image'),
+    validateField,
+    catchAsync(fields.updateFields)
+  )
   .delete(isLoggedIn, isOwner, catchAsync(fields.deleteField));
 
 router.get('/:id/edit', isLoggedIn, isOwner, catchAsync(fields.renderEditForm));
