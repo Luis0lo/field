@@ -1,5 +1,8 @@
 const Field = require('../models/field');
 const { cloudinary } = require('../cloudinary');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
   const fields = await Field.find({});
@@ -11,12 +14,19 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createField = async (req, res, next) => {
-  const field = new Field(req.body.field);
-  field.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-  field.owner = req.user._id;
-  await field.save();
-  req.flash('success', 'Your field has been posted');
-  res.redirect(`/fields/${field._id}`);
+  const geoData = await geocoder
+    .forwardGeocode({
+      query: req.body.field.location,
+      limit: 1,
+    })
+    .send();
+  res.send(geoData.body.features[0].geometry.coordinates);
+  // const field = new Field(req.body.field);
+  // field.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+  // field.owner = req.user._id;
+  // await field.save();
+  // req.flash('success', 'Your field has been posted');
+  // res.redirect(`/fields/${field._id}`);
 };
 
 module.exports.showField = async (req, res) => {
