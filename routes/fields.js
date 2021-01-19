@@ -11,11 +11,12 @@ const upload = multer({ storage });
 router
   .route('/')
   .get(catchAsync(fields.index))
-  // .post(isLoggedIn, validateField, catchAsync(fields.createField));
-  .post(upload.array('image'), (req, res) => {
-    res.send('it worked');
-    console.log(req.body, req.files);
-  });
+  .post(
+    isLoggedIn,
+    upload.array('image'),
+    validateField,
+    catchAsync(fields.createField)
+  );
 router.get('/new', isLoggedIn, fields.renderNewForm);
 
 router

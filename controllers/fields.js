@@ -11,6 +11,7 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createField = async (req, res, next) => {
   const field = new Field(req.body.field);
+  field.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   field.owner = req.user._id;
   await field.save();
   req.flash('success', 'Your field has been posted');

@@ -3,7 +3,9 @@
 <div class="row">
   <div class="col-6">
     <div class="card mb-3">
-      <img src="<%= field.image %> " class="card-img-top" alt="..." />
+      <% for(let img of field.images) {%>
+      <img src="<%= img.url %> " class="card-img-top" alt="..." />
+      <% } %>
       <div class="card-body">
         <h5 class="card-title"><%= field.title %></h5>
         <p class="card-text"><%= field.description %></p>
@@ -42,17 +44,6 @@
       novalidate
     >
       <div class="mb-3">
-        <!-- <div class="mb-3">
-          <label class="form-label" for="rating">Rating</label>
-          <input
-            class="form-range"
-            type="range"
-            min="1"
-            max="5"
-            name="review[rating]"
-            id="rating"
-          />
-        </div> -->
         <div class="mb-3">
           <fieldset class="starability-basic">
             <input
