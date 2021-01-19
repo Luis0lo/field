@@ -1,4 +1,5 @@
 const Field = require('../models/field');
+const { cloudinary } = require('../cloudinary');
 
 module.exports.index = async (req, res) => {
   const fields = await Field.find({});
@@ -45,6 +46,16 @@ module.exports.updateFields = async (req, res) => {
   const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   field.images.push(...imgs);
   await field.save();
+  if (req.body.deleteImages) {
+    for (let filename of req.body.deleteImages) {
+      await cloudinary.uploader.destroy(filename);
+    }
+    await field.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteImages } } },
+    });
+    console.log(field);
+  }
+
   req.flash('success', 'Your field has been Updated');
   res.redirect(`/fields/${field._id}`);
 };
