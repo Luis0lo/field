@@ -78,11 +78,25 @@
           type="file"
           id="image"
           name="image"
-          required
           multiple
         />
         <div class="valid-feedback">Looks Good!</div>
       </div>
+      <div class="mb-3">
+        <% field.images.forEach(function (img, i) { %>
+        <img src="<%= img.url %> " alt="" class="img-thumbnail" />
+        <div class="form-check-inline">
+          <input
+            type="checkbox"
+            id="image-<%= i %>"
+            name="deleteImages[]"
+            value="<%= img.filename %> "
+          />
+        </div>
+        <label for="image-<%= i %>">Delete</label>
+        <% }) %>
+      </div>
+
       <div class="d-grid mb-3">
         <button class="btn btn-info">Update Field</button>
       </div>
