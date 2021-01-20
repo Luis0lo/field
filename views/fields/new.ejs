@@ -2,7 +2,7 @@
 
 <div class="row">
   <h1 class="text-center">New Field</h1>
-  <div class="col-6 offset-3">
+  <div class="col-md-6 mx-auto">
     <form
       action="/fields"
       method="POST"
@@ -17,6 +17,7 @@
           type="text"
           name="field[title]"
           id="title"
+          autofocus
           required
         />
         <div class="valid-feedback">Looks Good!</div>
@@ -80,6 +81,6 @@
       </div>
     </form>
 
-    <a href="/fields">All Fields</a>
+    <!-- <a href="/fields">All Fields</a> -->
   </div>
 </div>

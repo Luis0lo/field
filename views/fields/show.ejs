@@ -1,8 +1,7 @@
 <% layout('layouts/Boilerplate') %>
 
 <div class="row">
-  <div class="col-6">
-    <div id="map" style="width: 400px; height: 300px"></div>
+  <div class="col-md-6">
     <div id="fieldCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <% field.images.forEach((img, i) => { %>
@@ -61,7 +60,8 @@
       <div class="card-footer text-muted">2 days ago</div>
     </div>
   </div>
-  <div class="col-6">
+  <div class="col-md-6">
+    <div id="map" class="mb-3"></div>
     <% if(currentUser) { %>
     <h2>Leave a Review</h2>
     <form
@@ -155,7 +155,7 @@
   </div>
 </div>
 
-<a href="/fields">All Fields</a>
+<!-- <a href="/fields">All Fields</a> -->
 
 <script>
   const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
