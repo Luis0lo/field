@@ -12,33 +12,43 @@ ImageSchema.virtual('thumbnail').get(function () {
   return this.url.replace('/upload', '/upload/w_200');
 });
 
-const FieldSchema = new Schema({
-  title: String,
-  images: [ImageSchema],
-  geometry: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true,
+const opts = { toJSON: { virtuals: true } };
+
+const FieldSchema = new Schema(
+  {
+    title: String,
+    images: [ImageSchema],
+    geometry: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
-  price: Number,
-  description: String,
-  location: String,
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  reviews: [
-    {
+    price: Number,
+    description: String,
+    location: String,
+    owner: {
       type: Schema.Types.ObjectId,
-      ref: 'Review',
+      ref: 'User',
     },
-  ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
+      },
+    ],
+  },
+  opts
+);
+
+FieldSchema.virtual('properties.popUpMarkup').get(function () {
+  return `<strong><a href='/fields/${this._id}'>${this.title}</a></strong>
+  <p>${this.description.substring(0, 20)}...</p>`;
 });
 
 //mongoose middleware
