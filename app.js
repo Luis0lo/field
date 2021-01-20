@@ -20,6 +20,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const userRoutes = require('./routes/users');
 const fieldsRoutes = require('./routes/fields');
 const reviewsRoutes = require('./routes/reviews');
+const field = require('./models/field');
 
 mongoose.connect('mongodb://localhost:27017/field', {
   useNewUrlParser: true,
@@ -47,11 +48,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
 const sessionConfig = {
+  name: 'session',
   secret: 'thisisasecret!',
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
+    // secure: true
     //1k milsecond in a sec > 60sec in a min > 60 min in a hr > 24hr in a day > 7 days ina week
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
