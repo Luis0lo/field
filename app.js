@@ -163,6 +163,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render('error', { err });
 });
 
-app.listen(3000, () => {
-  console.log('Running in 3k');
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Running in ${port}`);
 });
