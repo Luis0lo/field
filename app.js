@@ -21,8 +21,11 @@ const userRoutes = require('./routes/users');
 const fieldsRoutes = require('./routes/fields');
 const reviewsRoutes = require('./routes/reviews');
 const field = require('./models/field');
+const MongoDBStore = require('connect-mongo')(session);
 
-mongoose.connect('mongodb://localhost:27017/field', {
+// const dbUrl = process.env.DB_URL;
+const dbUrl = 'mongodb://localhost:27017/field';
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -47,7 +50,18 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const store = new MongoDBStore({
+  url: dbUrl,
+  secret: 'thisisasecret!',
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on('error', function (e) {
+  console.log('session store error', e);
+});
+
 const sessionConfig = {
+  store,
   name: 'session',
   secret: 'thisisasecret!',
   resave: false,
